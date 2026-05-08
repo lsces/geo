@@ -2,16 +2,16 @@
 // Add the following to your config/config_inc.php to add postgis support to geo
 // define('POSTGIS_SUPPORT', true); define('POSTGIS_SRID', 4326);
 
-$tables = array(
-  'geo' => "
+$tables = [
+	'geo' => "
     content_id I4 NOTNULL,
     lat F,
     lng F,
     amsl F,
     amsl_unit C(2)
-    CONSTRAINT ', CONSTRAINT `geo_ref` FOREIGN KEY (`content_id`) REFERENCES `".BIT_DB_PREFIX."liberty_content`( `content_id` )'
+    CONSTRAINT ', CONSTRAINT `geo_ref` FOREIGN KEY (`content_id`) REFERENCES `" . BIT_DB_PREFIX . "liberty_content`( `content_id` )'
   "
-);
+];
 
 global $gBitInstaller;
 
@@ -35,5 +35,5 @@ $gBitInstaller->registerPackageInfo( GEO_PKG_NAME, array(
 
 // Requirements
 $gBitInstaller->registerRequirements( GEO_PKG_NAME, array(
-	'liberty' => array( 'min' => '2.1.4' ),
+	'liberty' => [ 'min' => '5.0.0' ],
 ));

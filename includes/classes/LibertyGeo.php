@@ -10,7 +10,9 @@
 /**
  * Initialize
  */
-require_once( KERNEL_PKG_PATH.'BitBase.php' );
+namespace Bitweaver\Geo;
+use Bitweaver\BitBase;
+use Bitweaver\Liberty\LibertyBase;
 
 /**
  * @package geo
@@ -18,14 +20,14 @@ require_once( KERNEL_PKG_PATH.'BitBase.php' );
 class LibertyGeo extends LibertyBase {
 	var $mContentId;
 
-	function LibertyGeo( $pContentId=NULL ) {
+	function __construct( $pContentId=NULL ) {
 		parent::__construct();
 		$this->mContentId = $pContentId;
 	}
 
 	/**
 	 * Load the data from the database
-	 * @param pParamHash be sure to pass by reference in case we need to make modifcations to the hash
+	 * @param array pParamHash be sure to pass by reference in case we need to make modifcations to the hash
 	 **/
 	function load() {
 		if( $this->isValid() ) {
@@ -52,7 +54,7 @@ class LibertyGeo extends LibertyBase {
 					$result = $this->mDb->associateInsert( $table, $pParamHash['geo_store'] );
 				}
 
-				if (defined('POSTGIS_SUPPORT')) {
+				if (defined('POSTGIS_SRID')) {
 					$this->mDb->query("UPDATE ".$table." SET `geom`=GeomFromText( 'POINT(' || lat || ' ' || lng || ')', ".POSTGIS_SRID.")");
 				}
 
@@ -73,7 +75,7 @@ class LibertyGeo extends LibertyBase {
 	 * @access private
 	 **/
 	function verify( &$pParamHash ) {
-		$pParamHash['geo_store'] = array();
+		$pParamHash['geo_store'] = [];
 		if( $this->isValid() ) {
 			$this->load();
 			if(!empty( $pParamHash['geo'])){
